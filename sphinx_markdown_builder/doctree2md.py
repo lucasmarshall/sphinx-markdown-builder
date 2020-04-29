@@ -575,6 +575,13 @@ class Translator(nodes.NodeVisitor):
         # Replace 'refuri' in reference with HTTP address, if possible
         # None for no possible address
         url = node.get('refuri')
+        refid = node.get('refid')
+        if not url:
+            return None
+        if '#' in url:
+            url, refid = url.split('#', 1)
+        if url.endswith('.md'):
+            url = url.replace('.md', '')
         if not node.get('internal'):
             return url
         # If HTTP page build URL known, make link relative to that.
@@ -584,12 +591,10 @@ class Translator(nodes.NodeVisitor):
         if url in (None, ''):  # Reference to this doc
             url = self.builder.get_target_uri(this_doc)
         else:  # URL is relative to the current docname.
-            this_dir = posixpath.dirname(this_doc)
-            if this_dir:
-                url = posixpath.normpath('{}/{}'.format(this_dir, url))
+            url = self.builder.get_relative_uri(this_doc, url)
         url = '{}/{}'.format(self.markdown_http_base, url)
-        if 'refid' in node:
-            url += '#' + node['refid']
+        if refid:
+            url += '#' + refid
         return url
 
     def visit_reference(self, node):

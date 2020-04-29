@@ -17,10 +17,6 @@ class MarkdownTranslator(Translator):
     tbodys = []
     theads = []
 
-    def __init__(self, document, builder=None):
-        Translator.__init__(self, document, builder=None)
-        self.builder = builder
-
     @property
     def rows(self):
         rows = []

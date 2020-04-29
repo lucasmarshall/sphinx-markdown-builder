@@ -3,7 +3,6 @@ from docutils.io import StringOutput
 from io import open
 from os import path
 from sphinx.builders import Builder
-from sphinx.builders import Builder
 from sphinx.locale import __
 from sphinx.util import logging
 from sphinx.util.osutil import ensuredir, os_path
@@ -44,7 +43,7 @@ class MarkdownBuilder(Builder):
                 pass
 
     def get_target_uri(self, docname, typ=None):
-        return ''
+        return docname + out_suffix
 
     def prepare_writing(self, docnames):
         self.writer = MarkdownWriter(self)
